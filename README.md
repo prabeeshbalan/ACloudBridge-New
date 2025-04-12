@@ -25,31 +25,57 @@ aCloudBridge_New/
 │   ├── package-lock.json    #  NPM lock file
 
 │   └── package.json         # Project dependencies and scripts
+
 │├── acloudbridge_webapp/      # Frontend Code
+
 │   ├── .next/               # Next.js build output (not committed to repo)
+
 │   ├── node_modules/        # Node.js dependencies (not committed to repo)
+
 │   ├── public/              # Static assets
+
 │   │   └── favicon.ico      # Favicon
+
 │   ├── src/                 # Source code
+
 │   │   ├── app/             # Next.js application pages
+
 │   │   │   ├── account/       # Account-related pages
+
 │   │   │   ├── changepassword/  # Change password page
+
 │   │   │   ├── contact/       # Contact page
+
 │   │   │   ├── login/         # Login page
+
 │   │   │   ├── profile/       # User profile page
+
 │   │   │   ├── signup/        # Signup page
+
 │   │   │   ├── layout.tsx     # Main layout component
+
 │   │   │   └── page.tsx       # Home page component
+
 │   │   ├── globals.css      # Global styles
+
 │   │   ├── svg.d.ts         # SVG type definitions
+
 │   ├── .eslint.config.mjs   # ESLint configuration
+
 │   ├── Implementation document.txt #  (Extra file, not standard Next.js)
+
 ├── next-env.d.ts      # Next.js environment type definitions
+
 │   ├── next.config.ts     # Next.js configuration
+
 │   ├── package-lock.json  # NPM lock file
+
 │   ├── package.json       # Project dependencies and scripts
+
 │   ├── postcss.config.mjs # PostCSS configuration
+
 │   └── tsconfig.json      # TypeScript configuration
+
 │└── .gitignore             # Specifies intentionally untracked files
 
 ## Backend (acloudbridge_backend)
