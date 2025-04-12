@@ -11,6 +11,7 @@ The repository has the following structure:
 aCloudBridge_New/
 
 ├── acloudbridge_backend/     # Backend Code
+
 │   ├── .env                 # Environment variables
 │   ├── generate-secret.js    # Script to generate a secret key
 │   ├── node_modules/        # Node.js dependencies
