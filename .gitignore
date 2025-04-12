@@ -9,7 +9,9 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-
+acloudbridge_webapp/.next
+/acloudbridge_webapp/node_modules
+/acloudbridge_backend/node_modules
 # testing
 /coverage
 
