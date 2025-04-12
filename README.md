@@ -9,6 +9,7 @@ aCloudBridge is a 3 tier web application with a separate frontend and backend wi
 The repository has the following structure:
 
 aCloudBridge_New/
+
 ├── acloudbridge_backend/     # Backend Code
 │   ├── .env                 # Environment variables
 │   ├── generate-secret.js    # Script to generate a secret key
