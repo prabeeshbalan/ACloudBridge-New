@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/public/styles.css"],"sourcesContent":[".glassmorphism-button {\r\n    background: rgba(255, 255, 255, 0.1);\r\n    border-radius: 16px;\r\n    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);\r\n    backdrop-filter: blur(5px);\r\n    -webkit-backdrop-filter: blur(5px);\r\n    border: 1px solid rgba(255, 255, 255, 0.3);\r\n    padding: 12px 24px;\r\n    color: white;\r\n    font-weight: 600;\r\n    transition: all 0.3s ease;\r\n  }\r\n  \r\n  .glassmorphism-button:hover {\r\n    background: rgba(255, 255, 255, 0.2);\r\n  }\r\n  \r\n  .glassmorphism-card {\r\n    background: rgba(255, 255, 255, 0.08);\r\n    border-radius: 16px;\r\n    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);\r\n    backdrop-filter: blur(5px);\r\n    -webkit-backdrop-filter: blur(5px);\r\n    border: 1px solid rgba(255, 255, 255, 0.3);\r\n    padding: 24px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    transition: all 0.3s ease;\r\n  }\r\n  \r\n  .glassmorphism-card:hover {\r\n    background: rgba(255, 255, 255, 0.12);\r\n  }"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;AAaE;;;;AAIA;;;;;;;;;;;;;;AAcA"}}]
-}
