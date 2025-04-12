@@ -62,7 +62,7 @@ aCloudBridge_New/
 
 │   ├── .eslint.config.mjs   # ESLint configuration
 
-│   ├── Implementation document.txt #  (Extra file, not standard Next.js)
+│   ├── Implementation document.txt #  (Extra file, project implimentation information)
 
 ├── next-env.d.ts      # Next.js environment type definitions
 
