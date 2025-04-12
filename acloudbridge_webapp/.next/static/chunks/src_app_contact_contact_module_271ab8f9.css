@@ -1,0 +1,44 @@
+/* [project]/src/app/contact/contact.module.css [app-client] (css) */
+.contact-module__swMWYG__linkedinButton {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-image: url("/linkedin-logo.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 10px;
+  background-color: #fff;
+}
+
+.contact-module__swMWYG__githubButton {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-image: url("/github-logo.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: #fff;
+}
+
+.contact-module__swMWYG__linkedinButton:hover, .contact-module__swMWYG__githubButton:hover {
+  opacity: .8;
+}
+
+.contact-module__swMWYG__visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.contact-module__swMWYG__linkedinButton img, .contact-module__swMWYG__githubButton img {
+  opacity: 1;
+}
+
+
+/*# sourceMappingURL=src_app_contact_contact_module_271ab8f9.css.map*/
