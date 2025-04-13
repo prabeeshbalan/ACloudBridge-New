@@ -1,5 +1,5 @@
 output "terraform_db_endpoint" {
-  value       = module.acloudbridge-postgresql.endpoint
+  value       = module.acloudbridge-postgresql.db_instance_address
 }
 
 output "terraform_db_username" {

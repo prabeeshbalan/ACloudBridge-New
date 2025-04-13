@@ -29,10 +29,10 @@ module "acloudbridge-igw" {
 module "acloudbridge-nacl" {
   source                           = "./NACL"
   acloudbridge-vpc_id             = module.acloudbridge-vpc.acloudbridge-vpc_id
-  acloudbridge-subnet-public-us-east-1a_id  = module.acloudbridge-subnet-public-us-east-1aacloudbridge-subnet-public-us-east-1a_id
-  acloudbridge-subnet-public-us-east-1b_id  = module.acloudbridge-subnet-public-us-east-1b.acloudbridge-subnet-public-us-east-1b_id
-  acloudbridge-subnet-private-us-east-1a_id = module.acloudbridge-subnet-private-us-east-1a.acloudbridge-subnet-private-us-east-1a_id
-  acloudbridge-subnet-private-us-east-1b_id = module.acloudbridge-subnet-private-us-east-1b.acloudbridge-subnet-private-us-east-1b_id
+  acloudbridge-subnet-public-us-east-1a_id  = module.acloudbridge-subnet.acloudbridge-subnet-public-us-east-1a_id
+  acloudbridge-subnet-public-us-east-1b_id  = module.acloudbridge-subnet.acloudbridge-subnet-public-us-east-1b_id
+  acloudbridge-subnet-private-us-east-1a_id = module.acloudbridge-subnet.acloudbridge-subnet-private-us-east-1a_id
+  acloudbridge-subnet-private-us-east-1b_id = module.acloudbridge-subnet.acloudbridge-subnet-private-us-east-1b_id
 }
 
 module "acloudbridge-subnet" {
@@ -43,10 +43,10 @@ module "acloudbridge-subnet" {
 module "acloudbridge-rtb" {
   source                           = "./RouteTable"
   acloudbridge-vpc_id             = module.acloudbridge-vpc.acloudbridge-vpc_id
-  acloudbridge-subnet-public-us-east-1a_id  = module.acloudbridge-subnet-public-us-east-1aacloudbridge-subnet-public-us-east-1a_id
-  acloudbridge-subnet-public-us-east-1b_id  = module.acloudbridge-subnet-public-us-east-1b.acloudbridge-subnet-public-us-east-1b_id
-  acloudbridge-subnet-private-us-east-1a_id = module.acloudbridge-subnet-private-us-east-1a.acloudbridge-subnet-private-us-east-1a_id
-  acloudbridge-subnet-private-us-east-1b_id = module.acloudbridge-subnet-private-us-east-1b.acloudbridge-subnet-private-us-east-1b_id
+  acloudbridge-subnet-public-us-east-1a_id  = module.acloudbridge-subnet.acloudbridge-subnet-public-us-east-1a_id
+  acloudbridge-subnet-public-us-east-1b_id  = module.acloudbridge-subnet.acloudbridge-subnet-public-us-east-1b_id
+  acloudbridge-subnet-private-us-east-1a_id = module.acloudbridge-subnet.acloudbridge-subnet-private-us-east-1a_id
+  acloudbridge-subnet-private-us-east-1b_id = module.acloudbridge-subnet.acloudbridge-subnet-private-us-east-1b_id
   acloudbridge-igw_id             = module.acloudbridge-igw.acloudbridge-igw_id
 }
 
@@ -57,8 +57,8 @@ module "acloudbridge-sg" {
 
 module "acloudbridge-ec2" {
   source                          = "./ec2"
-  acloudbridge-public-sg_id                = module.acloudbridge-public-sg.acloudbridge-public-sg_id
-  acloudbridge-subnet-public-us-east-1a_id  = module.acloudbridge-subnet-public-us-east-1aacloudbridge-subnet-public-us-east-1a_id
+  acloudbridge-public-sg_id                = module.acloudbridge-sg.acloudbridge-public-sg_id
+  acloudbridge-subnet-public-us-east-1a_id  = module.acloudbridge-subnet.acloudbridge-subnet-public-us-east-1a_id
 }
 
 variable "db_password" {
@@ -77,16 +77,16 @@ variable "db_name" {
   sensitive   = true
 }
 
-module "aws-rds-mysql-free-tier" {
-  source                          = "./MySQL"
+module "acloudbridge-postgresql" {
+  source  = "./PostgreSQL"
   db_password = var.db_password
   db_username = var.db_username
-  db_name = var.db_name  
-  aws-public-sg_id                = module.aws-sg-free-tier.aws-public-sg_id
-  acloudbridge-subnet-public-us-east-1a_id  = module.acloudbridge-subnet-public-us-east-1aacloudbridge-subnet-public-us-east-1a_id
-  acloudbridge-subnet-public-us-east-1b_id  = module.acloudbridge-subnet-public-us-east-1b.acloudbridge-subnet-public-us-east-1b_id
-  acloudbridge-subnet-private-us-east-1a_id = module.acloudbridge-subnet-private-us-east-1a.acloudbridge-subnet-private-us-east-1a_id
-  acloudbridge-subnet-private-us-east-1b_id = module.acloudbridge-subnet-private-us-east-1b.acloudbridge-subnet-private-us-east-1b_id
+  db_name = var.db_name
+  acloudbridge-public-sg_id = module.acloudbridge-sg.acloudbridge-public-sg_id
+  acloudbridge-subnet-public-us-east-1a_id  = module.acloudbridge-subnet.acloudbridge-subnet-public-us-east-1a_id
+  acloudbridge-subnet-public-us-east-1b_id  = module.acloudbridge-subnet.acloudbridge-subnet-public-us-east-1b_id
+  acloudbridge-subnet-private-us-east-1a_id = module.acloudbridge-subnet.acloudbridge-subnet-private-us-east-1a_id
+  acloudbridge-subnet-private-us-east-1b_id = module.acloudbridge-subnet.acloudbridge-subnet-private-us-east-1b_id
 }
 
 output "terraform_db_password" {

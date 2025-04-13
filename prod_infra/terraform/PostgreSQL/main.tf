@@ -5,7 +5,7 @@ module "acloudbridge-postgresql" {
   identifier = "acloudbridge-postgresql-db"
 
   engine          = "postgres"
-  engine_version  = "9.6.3" # Or specify a supported version
+  engine_version  = "17.2" # Or specify a supported version
   instance_class  = "db.t4g.micro"
   allocated_storage = 5
   storage_encrypted = false # Turn off encryption
@@ -34,7 +34,7 @@ module "acloudbridge-postgresql" {
     Environment = "dev"
   }
 
-  family = "postgres9.6" # Or the correct family for the engine_version
+  family = "postgres17" # Or the correct family for the engine_version
 
   publicly_accessible = true #  publicly accessible
 
