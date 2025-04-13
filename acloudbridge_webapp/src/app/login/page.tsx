@@ -8,7 +8,7 @@ export default function LoginPage() {
     email: '',
     password: '',
   });
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [token, setToken] = useState(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
