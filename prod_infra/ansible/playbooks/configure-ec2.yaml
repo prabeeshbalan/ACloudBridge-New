@@ -1,17 +1,25 @@
+---
 - name: Configure EC2 for aCloudBridge Application
   hosts: ec2
   become: yes
 
+  vars:
+    # PostgreSQL connection details (adjust as needed)
+    postgres_host: "{{ terraform_db_endpoint }}" # Use the endpoint from Terraform output
+    postgres_port: 5432
+    postgres_user: "{{ terraform_db_username }}"       # Use the username from Terraform
+    postgres_password: "{{ terraform_db_password }}" # Use the password from Terraform
+    postgres_db: "{{ terraform_db_name }}" #  Use the database name created by Terraform
   tasks:
     - name: Gathering Facts
       setup:
 
-    - name: Update yum cache
-      yum:
+    - name: Update yum/dnf cache
+      dnf: #changed from yum to dnf
         update_cache: yes
 
     - name: Install Git
-      yum:
+      dnf: #changed from yum to dnf
         name: git
         state: present
 
@@ -32,14 +40,14 @@
 
     - name: Clone aCloudBridge Repository
       git:
-        repo: "https://{{ githubuser }}:{{ githubpassword }}@github.com/prabeeshbalan/aCloudBridge.git"
+        repo: "https://{{ githubuser }}:{{ githubpassword }}@github.com/prabeeshbalan/ACloudBridge-New.git"
         dest: /home/ec2-user/aCloudBridge
         version: main
         force: yes
       become_user: ec2-user
 
     - name: Debug List frontend directory
-      shell: ls -l /home/ec2-user/aCloudBridge/frontend
+      shell: ls -l /home/ec2-user/aCloudBridge/acloudbridge_webapp
       become_user: ec2-user
 
     - name: Install Frontend Dependencies
@@ -48,7 +56,7 @@
         nvm use 22
         npm install
       args:
-        chdir: /home/ec2-user/aCloudBridge/frontend
+        chdir: /home/ec2-user/aCloudBridge/acloudbridge_webapp
       become_user: ec2-user
 
     - name: Install Backend Dependencies
@@ -57,7 +65,7 @@
         nvm use 22
         npm install
       args:
-        chdir: /home/ec2-user/aCloudBridge/backend
+        chdir: /home/ec2-user/aCloudBridge/acloudbridge_backend
       become_user: ec2-user
 
     - name: Install PM2 Globally
@@ -66,6 +74,13 @@
         nvm use 22
         npm install -g pm2
       become_user: ec2-user
+    
+    - name: Install psycopg2 (PostgreSQL client library)
+      become: yes
+      package:
+        name:
+          - python3-psycopg2  # Or the appropriate package for your distribution
+        state: present
 
     - name: Build Frontend
       shell: |
@@ -73,63 +88,52 @@
         nvm use 22
         npm run build
       args:
-        chdir: /home/ec2-user/aCloudBridge/frontend
+        chdir: /home/ec2-user/aCloudBridge/acloudbridge_webapp
       become_user: ec2-user
 
-    - name: Build Backend 
+    - name: Build Backend
       shell: |
         source /home/ec2-user/.bashrc
         nvm use 22
-        npm run build 
+        npm run build
       args:
-        chdir: /home/ec2-user/aCloudBridge/backend
+        chdir: /home/ec2-user/aCloudBridge/acloudbridge_backend
       become_user: ec2-user
 
-    - name: Update DNF Cache
-      dnf:
-        update_cache: yes
-
-    - name: Install MariaDB 105
-      dnf:
-        name: mariadb105
-        state: present
-    
     - name: Debug Variables
       debug:
         msg: "db_endpoint: {{ terraform_db_endpoint }}, db_user: {{ terraform_db_username }}, db_password: {{ terraform_db_password }}, db_name: {{ terraform_db_name }}"
-    
-    - name: Create Database and Users Table in MySQL
-      shell: |
-        mysql -h "{{ terraform_db_endpoint }}" -u "{{ terraform_db_username }}" -p"{{ terraform_db_password }}" -D "{{ terraform_db_name }}" -e "
-          CREATE DATABASE IF NOT EXISTS app_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-          USE app_db;
-          CREATE TABLE IF NOT EXISTS users (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            username VARCHAR(255) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-          ) ENGINE=InnoDB ROW_FORMAT=COMPRESSED KEY_BLOCK_SIZE=8;
-          CREATE INDEX idx_username ON users(username);
-        "
-      become_user: ec2-user
-      register: mysql_result
 
-    - name: Fail if MySQL database/table creation failed
-      fail:
-        msg: "Failed to create database/table in MySQL: {{ mysql_result.stderr }}"
-      when: mysql_result.rc != 0
+    - name: Create Database and Users Table in PostgreSQL
+      become: yes
+      become_user: postgres
+      postgresql_query:
+        db: "{{ terraform_db_name }}" # Connect to the database created by Terraform
+        query: |
+          CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            first_name VARCHAR(255),
+            last_name VARCHAR(255),
+            email VARCHAR(255) UNIQUE NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            verified BOOLEAN DEFAULT FALSE,
+            is_active BOOLEAN DEFAULT TRUE
+          );
+        login_host: "{{ postgres_host }}"
+        login_port: "{{ postgres_port }}"
+        login_user: "{{ postgres_user }}"
+        login_password: "{{ postgres_password }}"
 
     - name: Deploy Backend Configuration
       template:
         src: server.js.j2
-        dest: /home/ec2-user/aCloudBridge/backend/server.js
+        dest: /home/ec2-user/aCloudBridge/acloudbridge_backend/server.js
       become_user: ec2-user
       vars:
-        db_host: "{{ hostvars['localhost']['terraform_db_endpoint'] }}"
-        db_user: "{{ hostvars['localhost']['terraform_db_username'] }}"
-        db_password: "{{ hostvars['localhost']['terraform_db_password'] }}"
-        db_name: "{{ hostvars['localhost']['terraform_db_name'] }}"
+        db_host: "{{ terraform_db_endpoint }}" #changed from localhost
+        db_user: "{{ terraform_db_username }}"
+        db_password: "{{ terraform_db_password }}"
+        db_name: "{{ terraform_db_name }}" # Correct database name
 
     - name: Start Frontend with PM2
       shell: |
@@ -137,7 +141,7 @@
         nvm use 22
         pm2 start npm --name acloudbridge-frontend -- start
       args:
-        chdir: /home/ec2-user/aCloudBridge/frontend
+        chdir: /home/ec2-user/aCloudBridge/acloudbridge_webapp
       become_user: ec2-user
 
     - name: Start Backend with PM2
@@ -146,5 +150,5 @@
         nvm use 22
         pm2 start server.js --name acloudbridge-backend
       args:
-        chdir: /home/ec2-user/aCloudBridge/backend
+        chdir: /home/ec2-user/aCloudBridge/acloudbridge_backend
       become_user: ec2-user
