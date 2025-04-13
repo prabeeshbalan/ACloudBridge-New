@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import Layout from '@/app/layout';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { FaUserCircle } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';

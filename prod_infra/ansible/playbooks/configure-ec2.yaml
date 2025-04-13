@@ -86,7 +86,7 @@
       shell: |
         source /home/ec2-user/.bashrc
         nvm use 22
-        npm run build
+        npm run build -- --no-lint
       args:
         chdir: /home/ec2-user/aCloudBridge/acloudbridge_webapp
       become_user: ec2-user

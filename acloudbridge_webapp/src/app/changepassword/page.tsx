@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from 'react';
-import Layout from '@/app/layout';
 import { useRouter } from 'next/navigation';
 
 const ChangePasswordPage = () => {

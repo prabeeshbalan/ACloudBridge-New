@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Layout from '@/app/layout';
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
