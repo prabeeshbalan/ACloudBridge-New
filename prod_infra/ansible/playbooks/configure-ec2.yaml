@@ -23,10 +23,9 @@
         name: git
         state: present
 
-    - name: Install Node.js (using nvm) and npm, and set environment
+    - name: Install Node.js (using nvm) and npm
       shell: |
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-        source /home/ec2-user/.profile
         source /home/ec2-user/.bashrc
         nvm install 22
         nvm use 22
@@ -38,8 +37,6 @@
         echo "NPM path: $(which npm)"
         echo "PATH: $PATH"
       become_user: ec2-user
-      environment:
-        PATH: "/home/ec2-user/.nvm/versions/node/v22.14.0/bin:$PATH" # Set PATH globally here
 
     - name: Clone aCloudBridge Repository
       git:
@@ -49,51 +46,20 @@
         force: yes
       become_user: ec2-user
 
-    - name: Check Disk Space Before Installing Frontend Dependencies
-      shell: df -h /home
-      register: disk_space_check
-      become_user: ec2-user
-
-    - name: Fail if not enough disk space
-      fail:
-        msg: "Insufficient disk space: {{ disk_space_check.stdout }}"
-      when: disk_space_check.stdout is search("Available") and disk_space_check.stdout | regex_replace(..., '') | int < 1024 # Example: Check for less than 1GB. Adjust as needed.
-      become_user: ec2-user
-
-    - name: Increase Swap Space (if needed)
-      shell: |
-        set -e
-        if ! grep -q "swapfile" /proc/swaps; then
-          dd if=/dev/zero of=/swapfile bs=1M count=4096 # Increase to 4GB swap file
-          mkswap /swapfile
-          chmod 600 /swapfile
-          swapon /swapfile
-          echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
-        fi
-      become: yes
-      become_user: root
-      ignore_errors: yes # In case swap is already configured
-
     - name: Install Frontend Dependencies
-      command: npm install --max-old-space-size=1024 # Limit Node.js memory usage
+      shell: |
+        source /home/ec2-user/.bashrc
+        nvm use 22
+        npm install  # Install dependencies *before* building
       args:
         chdir: /home/ec2-user/aCloudBridge/acloudbridge_webapp
       become_user: ec2-user
-      register: frontend_install_result
-      retries: 5 # Increase retries
-      delay: 60 # Increase delay
-      environment:
-        PATH: "/home/ec2-user/.nvm/versions/node/v22.14.0/bin:$PATH"
-      ignore_errors: yes # Allow task to complete even if it fails
 
-    - name: Fail if Frontend Dependencies installation failed after retries
-      fail:
-        msg: "Frontend Dependencies installation failed after multiple retries.  Error: {{ frontend_install_result }}"
-      when: frontend_install_result.rc != 0
-      become_user: ec2-user
-      
     - name: Install Backend Dependencies
-      command: npm install
+      shell: |
+        source /home/ec2-user/.bashrc
+        nvm use 22
+        npm install  # Install dependencies before building
       args:
         chdir: /home/ec2-user/aCloudBridge/acloudbridge_backend
       become_user: ec2-user
@@ -111,32 +77,25 @@
         name:
           - python3-psycopg2  # Or the appropriate package for your distribution
         state: present
-    
-    - name: Ensure next executable is executable
-      file:
-        path: /home/ec2-user/aCloudBridge/acloudbridge_backend/node_modules/.bin/next
-        mode: '0755'  # Set permissions to rwxr-xr-x
-      become_user: ec2-user
-
-    - name: Build Backend
-      shell: |
-        source /home/ec2-user/.profile
-        source /home/ec2-user/.bashrc
-        nvm use 22
-        PATH=$PATH:/home/ec2-user/.nvm/versions/node/v22.14.0/bin:/home/ec2-user/aCloudBridge/acloudbridge_backend/node_modules/.bin  # Add node_modules/.bin to PATH
-        npm run build
-      args:
-        chdir: /home/ec2-user/aCloudBridge/acloudbridge_backend
-        executable: /bin/bash  # Specify the shell explicitly
-      become_user: ec2-user
 
     - name: Build Frontend
       shell: |
         source /home/ec2-user/.bashrc
         nvm use 22
+        npm install
         npm run build -- --no-lint
       args:
         chdir: /home/ec2-user/aCloudBridge/acloudbridge_webapp
+      become_user: ec2-user
+
+    - name: Build Backend
+      shell: |
+        source /home/ec2-user/.bashrc
+        nvm use 22
+        npm install
+        npm run build
+      args:
+        chdir: /home/ec2-user/aCloudBridge/acloudbridge_backend
       become_user: ec2-user
 
     - name: Debug Variables
