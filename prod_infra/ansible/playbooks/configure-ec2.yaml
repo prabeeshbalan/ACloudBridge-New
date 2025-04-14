@@ -7,19 +7,19 @@
     # PostgreSQL connection details (adjust as needed)
     postgres_host: "{{ terraform_db_endpoint }}" # Use the endpoint from Terraform output
     postgres_port: 5432
-    postgres_user: "{{ terraform_db_username }}"       # Use the username from Terraform
+    postgres_user: "{{ terraform_db_username }}"    # Use the username from Terraform
     postgres_password: "{{ terraform_db_password }}" # Use the password from Terraform
-    postgres_db: "{{ terraform_db_name }}" #  Use the database name created by Terraform
+    postgres_db: "{{ terraform_db_name }}"    # Use the database name created by Terraform
   tasks:
     - name: Gathering Facts
       setup:
 
     - name: Update yum/dnf cache
-      dnf: #changed from yum to dnf
+      dnf: # Changed from yum to dnf
         update_cache: yes
 
     - name: Install Git
-      dnf: #changed from yum to dnf
+      dnf: # Changed from yum to dnf
         name: git
         state: present
 
@@ -46,15 +46,11 @@
         force: yes
       become_user: ec2-user
 
-    - name: Debug List frontend directory
-      shell: ls -l /home/ec2-user/aCloudBridge/acloudbridge_webapp
-      become_user: ec2-user
-
     - name: Install Frontend Dependencies
       shell: |
         source /home/ec2-user/.bashrc
         nvm use 22
-        npm install
+        npm install  # Install dependencies *before* building
       args:
         chdir: /home/ec2-user/aCloudBridge/acloudbridge_webapp
       become_user: ec2-user
@@ -63,7 +59,7 @@
       shell: |
         source /home/ec2-user/.bashrc
         nvm use 22
-        npm install
+        npm install  # Install dependencies before building
       args:
         chdir: /home/ec2-user/aCloudBridge/acloudbridge_backend
       become_user: ec2-user
@@ -74,7 +70,7 @@
         nvm use 22
         npm install -g pm2
       become_user: ec2-user
-    
+
     - name: Install psycopg2 (PostgreSQL client library)
       become: yes
       package:
