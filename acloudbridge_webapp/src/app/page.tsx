@@ -1,6 +1,7 @@
 "use client";
 import Head from 'next/head';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -42,33 +43,34 @@ export default function Home() {
       </Head>
 
       <main className="min-h-screen bg-[#0A192F] text-white">
-      <div className="relative h-[600px] flex justify-between items-center px-8 max-w-7xl mx-auto">
-  
-      <div className="z-10 max-w-xl text-left">
-      <h1 className="text-4xl md:text-5xl font-bold mb-4 glow-text text-[#64FFDA]">
-        Welcome to <span className="text-[#64FFDA]">aCloudBridge</span>
-      </h1>
-      <p className="text-lg md:text-xl mb-4 text-gray-300 glow-text">
-        The Gateway to Cloud Intelligence
-      </p>
-      <p className="mb-8 text-gray-400 glow-text">
-        Empowering DevOps, SREs & Engineers to build the future of Cloud native infrastructure.
-      </p>
-      <div className="flex space-x-4">
-        <button className="glassmorphism-button">Get Started</button>
-        <button className="glassmorphism-button">Explore Services</button>
-      </div>
-      </div>
+        <div className="relative h-[600px] flex justify-between items-center px-8 max-w-7xl mx-auto">
+          <div className="z-10 max-w-xl text-left">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 glow-text text-[#64FFDA]">
+              Welcome to <span className="text-[#64FFDA]">aCloudBridge</span>
+            </h1>
+            <p className="text-lg md:text-xl mb-4 text-gray-300 glow-text">
+              The Gateway to Cloud Intelligence
+            </p>
+            <p className="mb-8 text-gray-400 glow-text">
+              Empowering DevOps, SREs & Engineers to build the future of Cloud native infrastructure.
+            </p>
+            <div className="flex space-x-4">
+              <button className="glassmorphism-button">Get Started</button>
+              <button className="glassmorphism-button">Explore Services</button>
+            </div>
+          </div>
 
-  {/* Right - Logo */}
-  <div className="z-10 hidden md:block">
-    <img
-      src="/images/aCloudbridge_logo.png"
-      alt="aCloudBridge Logo"
-      className="w-[475px] h-auto neon-border"
-    />
-  </div>
-</div>
+          {/* Right - Logo */}
+          <div className="z-10 hidden md:block">
+            <Image
+              src="/images/aCloudbridge_logo.png"
+              alt="aCloudBridge Logo"
+              width={437} // Provide width
+              height={350} // Provide height (adjust as needed)
+              className="w-[500px] h-auto neon-border"
+            />
+          </div>
+        </div>
 
         <div className="bg-[#112240] py-16 px-4">
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -103,20 +105,20 @@ export default function Home() {
 
         <div className="bg-[#0A192F] py-16 px-4">
           <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-8">
-            <img src="/images/Terraform_logo.svg" alt="Terraform" className="h-10" />
-            <img src="/images/aws_logo.svg" alt="AWS" className="h-13" />
-            <img src="/images/azure_logo.svg" alt="Azure" className="h-9" />
-            <img src="/images/kubernetes.svg" alt="Kubernetes" className="h-9" />
-            <img src="/images/Jenkins_logo.svg" alt="Jenkins" className="h-11" />
-            <img src="/images/Ansible_logo.svg" alt="Ansible" className="h-12" />
-            <img src="/images/Linux_logo.svg" alt="Linux" className="h-10" />
-            <img src="/images/Docker_logo.svg" alt="Linux" className="h-10" />
+            <Image src="/images/Terraform_logo.svg" alt="Terraform" width={160} height={100} className="h-10" />
+            <Image src="/images/Aws_logo.svg" alt="AWS" width={100} height={52} className="h-10" />
+            <Image src="/images/Azure_Logo.svg" alt="Azure" width={100} height={36} className="h-10" />
+            <Image src="/images/kubernetes.svg" alt="Kubernetes" width={80} height={36} className="h-9" />
+            <Image src="/images/Jenkins_logo.svg" alt="Jenkins" width={150} height={44} className="h-11" />
+            <Image src="/images/Ansible_logo.svg" alt="Ansible" width={90} height={48} className="h-12" />
+            <Image src="/images/Linux_logo.svg" alt="Linux" width={90} height={40} className="h-10" />
+            <Image src="/images/Docker_logo.svg" alt="Docker" width={150} height={40} className="h-10" />
           </div>
         </div>
 
         <div className="bg-[#112240] py-16 px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-8 glow-text">Hi, I'm Prabeesh</h2>
+            <h2 className="text-3xl font-bold mb-8 glow-text">Hi, I&apos;m Prabeesh</h2>
             <p className="text-lg mb-8 glow-text">SRE, DevOps Engineer & Cloud Architect</p>
             <p className="mb-8 glow-text">With a passion for automation, I build robust infrastructure for modern applications.</p>
           </div>

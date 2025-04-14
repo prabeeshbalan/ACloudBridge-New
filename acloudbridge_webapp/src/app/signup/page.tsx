@@ -11,7 +11,7 @@ export default function SignupPage() {
     confirmPassword: '',
   });
 
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean-build": "next build --no-cache && rm -rf .next/cache"
   },
   "dependencies": {
     "next": "15.2.4",

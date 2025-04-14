@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Layout from '@/app/layout';
 import { FaUserCircle } from 'react-icons/fa';
 import { useRouter } from 'next/navigation'; // Import useRouter
 
