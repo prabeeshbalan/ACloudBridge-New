@@ -101,10 +101,8 @@
         msg: "db_endpoint: {{ terraform_db_endpoint }}, db_user: {{ terraform_db_username }}, db_password: {{ terraform_db_password }}, db_name: {{ terraform_db_name }}"
 
     - name: Create Database and Users Table in PostgreSQL
-      become: yes
-      become_user: postgres
-      postgresql_query:
-        db: "{{ terraform_db_name }}" # Connect to the database created by Terraform
+      community.postgresql.postgresql_query:
+        db: "{{ terraform_db_name }}"
         query: |
           CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
@@ -119,6 +117,7 @@
         login_port: "{{ postgres_port }}"
         login_user: "{{ postgres_user }}"
         login_password: "{{ postgres_password }}"
+      become: false
 
     - name: Deploy Backend Configuration
       template:
