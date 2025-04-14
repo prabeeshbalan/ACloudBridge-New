@@ -50,7 +50,7 @@
       shell: |
         source /home/ec2-user/.bashrc
         nvm use 22
-        npm install  # Install dependencies *before* building
+        npm install
       args:
         chdir: /home/ec2-user/aCloudBridge/acloudbridge_webapp
       become_user: ec2-user
@@ -59,7 +59,7 @@
       shell: |
         source /home/ec2-user/.bashrc
         nvm use 22
-        npm install  # Install dependencies before building
+        npm install
       args:
         chdir: /home/ec2-user/aCloudBridge/acloudbridge_backend
       become_user: ec2-user
@@ -82,7 +82,6 @@
       shell: |
         source /home/ec2-user/.bashrc
         nvm use 22
-        npm install
         npm run build -- --no-lint
       args:
         chdir: /home/ec2-user/aCloudBridge/acloudbridge_webapp
@@ -92,7 +91,6 @@
       shell: |
         source /home/ec2-user/.bashrc
         nvm use 22
-        npm install
         npm run build
       args:
         chdir: /home/ec2-user/aCloudBridge/acloudbridge_backend
