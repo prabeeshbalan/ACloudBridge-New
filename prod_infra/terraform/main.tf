@@ -92,15 +92,15 @@ module "acloudbridge-postgresql" {
 output "terraform_db_password" {
   description = "DB Password"
   value       = var.db_password
-  sensitive   = true
+  sensitive   = false
 }
 output "terraform_db_username" {
   description = "DB username"
   value       = var.db_username
-  sensitive   = true
+  sensitive   = false
 }
 output "terraform_db_name" {
   description = "DB name"
   value       = var.db_name
-  sensitive   = true
+  sensitive   = false
 }

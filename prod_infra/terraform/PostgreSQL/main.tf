@@ -16,6 +16,7 @@ module "acloudbridge-postgresql" {
   port                = 5432 # Postgres default port
   
   # Ensure password authentication
+  manage_master_user_password = false
   iam_database_authentication_enabled = false
 
   vpc_security_group_ids = [var.acloudbridge-public-sg_id] #  Security group
@@ -26,20 +27,17 @@ module "acloudbridge-postgresql" {
       var.acloudbridge-subnet-private-us-east-1b_id
   ]
   create_db_subnet_group = true
-
+  publicly_accessible    = true
   backup_retention_period = 0 # Turn off backups
-  
+  deletion_protection = false #  deletion protection
+  skip_final_snapshot = true
   tags = {
     Owner       = "acloudbridgeuser"
     Environment = "dev"
   }
 
-  family = "postgres17" # Or the correct family for the engine_version
+  family = "postgres17" 
 
-  publicly_accessible = true #  publicly accessible
-
-  deletion_protection = false #  deletion protection
-  skip_final_snapshot = true
 }
 
 # Example of how to fetch password from an environment variable (outside the module)

@@ -10,6 +10,7 @@
     postgres_user: "{{ terraform_db_username }}"    # Use the username from Terraform
     postgres_password: "{{ terraform_db_password }}" # Use the password from Terraform
     postgres_db: "{{ terraform_db_name }}"    # Use the database name created by Terraform
+    backend_url: "http://{{ DB_HOST }}:5000" # Use the Jenkins environment variable
   tasks:
     - name: Gathering Facts
       setup:
@@ -17,6 +18,7 @@
     - name: Update yum/dnf cache
       dnf: # Changed from yum to dnf
         update_cache: yes
+
 
     - name: Install Git
       dnf: # Changed from yum to dnf
@@ -117,6 +119,7 @@
         login_port: "{{ postgres_port }}"
         login_user: "{{ postgres_user }}"
         login_password: "{{ postgres_password }}"
+        ssl_mode: "disable"
       become: false
 
     - name: Deploy Backend Configuration
@@ -129,6 +132,13 @@
         db_user: "{{ terraform_db_username }}"
         db_password: "{{ terraform_db_password }}"
         db_name: "{{ terraform_db_name }}" # Correct database name
+        backend_url: "{{ backend_url }}" #  Use the variable
+
+    - name: Set Environment Variable for Frontend
+      shell: |
+        echo "Setting environment variable NEXT_PUBLIC_BACKEND_URL={{ backend_url }} in .env.production"
+        echo "NEXT_PUBLIC_BACKEND_URL={{ backend_url }}" > /home/ec2-user/aCloudBridge/acloudbridge_webapp/.env.production
+      become_user: ec2-user
 
     - name: Start Frontend with PM2
       shell: |

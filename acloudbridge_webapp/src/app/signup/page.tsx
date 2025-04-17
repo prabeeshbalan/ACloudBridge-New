@@ -2,6 +2,14 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
+// Declare the type for process.env
+declare const process: {
+  env: {
+    [key: string]: string | undefined;
+    NEXT_PUBLIC_BACKEND_URL?: string; //  Define the specific env variable you expect
+  };
+};
+
 export default function SignupPage() {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -24,7 +32,8 @@ export default function SignupPage() {
     setSuccess(false);
 
     try {
-      const response = await fetch('http://localhost:5000/register', { // Replace with your backend URL
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+      const response = await fetch(`${backendUrl}/register`, { // Replace with your backend URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

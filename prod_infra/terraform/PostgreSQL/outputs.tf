@@ -8,7 +8,7 @@ output "terraform_db_username" {
 
 output "terraform_db_password" {
   value       = var.db_password
-  sensitive   = true
+  sensitive   = false
 }
 
 output "terraform_db_name" {
