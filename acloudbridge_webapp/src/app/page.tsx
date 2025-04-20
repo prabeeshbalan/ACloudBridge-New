@@ -63,7 +63,7 @@ export default function Home() {
           {/* Right - Logo */}
           <div className="z-10 hidden md:block">
             <Image
-              src="/images/aCloudbridge_logo.png"
+              src="/images/aCloudBridge_logo.png"
               alt="aCloudBridge Logo"
               width={437} // Provide width
               height={350} // Provide height (adjust as needed)
