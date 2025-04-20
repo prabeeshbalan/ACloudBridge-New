@@ -17,8 +17,8 @@
 
     - name: Set backend_url using EC2 public IP
       set_fact:
-        backend_url: "http://{{ hostvars[inventory_hostname]['ansible_host'] }}:5000"
-        
+        backend_url: "http://{{ inventory_hostname }}:5000"
+
     - name: Debug backend_url
       debug:
         msg: "backend_url is {{ backend_url }}"
