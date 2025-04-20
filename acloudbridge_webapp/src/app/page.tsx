@@ -3,6 +3,13 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Image from 'next/image';
 
+// Declare the type for process.env
+declare const process: {
+  env: {
+    [key: string]: string | undefined;
+    NEXT_PUBLIC_BACKEND_URL?: string;
+  };
+};
 export default function Home() {
   const [formData, setFormData] = useState({
     name: '',
@@ -18,7 +25,8 @@ export default function Home() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:5000/send-email', {
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+        const response = await fetch(`${backendUrl}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

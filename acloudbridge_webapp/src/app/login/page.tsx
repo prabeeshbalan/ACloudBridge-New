@@ -2,6 +2,14 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
+// Declare the type for process.env
+declare const process: {
+  env: {
+    [key: string]: string | undefined;
+    NEXT_PUBLIC_BACKEND_URL?: string;
+  };
+};
+
 export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: '',
@@ -19,7 +27,8 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+      const response = await fetch(`${backendUrl}/login`, {
         method: 'POST', // Ensure POST method is used
         headers: {
           'Content-Type': 'application/json',

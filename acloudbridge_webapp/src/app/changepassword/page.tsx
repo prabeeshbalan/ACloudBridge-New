@@ -3,6 +3,13 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+// Declare the type for process.env
+declare const process: {
+    env: {
+      [key: string]: string | undefined;
+      NEXT_PUBLIC_BACKEND_URL?: string;
+    };
+  };
 const ChangePasswordPage = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -21,7 +28,8 @@ const ChangePasswordPage = () => {
         try {
             const token = localStorage.getItem('token');
 
-            const response = await fetch('http://localhost:5000/changepassword', { // CORRECTED ENDPOINT
+            const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+            const response = await fetch(`${backendUrl}/login`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

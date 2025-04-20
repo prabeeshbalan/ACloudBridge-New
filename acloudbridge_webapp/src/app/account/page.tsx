@@ -5,6 +5,14 @@ import { FaUser, FaLock } from 'react-icons/fa';
 import { FaUserCircle } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 
+// Declare the type for process.env
+declare const process: {
+    env: {
+      [key: string]: string | undefined;
+      NEXT_PUBLIC_BACKEND_URL?: string;
+    };
+  };
+
 interface User {
     name: string;
     email: string;
@@ -28,7 +36,8 @@ export default function AccountPage() {
             console.log('Token:', token);
             if (token) {
                 try {
-                    const response = await fetch('http://localhost:5000/user', {
+                    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+                    const response = await fetch(`${backendUrl}/login`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
@@ -80,7 +89,8 @@ export default function AccountPage() {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const response = await fetch('http://localhost:5000/deactivate', {
+                    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+                    const response = await fetch('${backendUrl}/deactivate', {
                         method: 'DELETE',
                         headers: {
                             Authorization: `Bearer ${token}`,
