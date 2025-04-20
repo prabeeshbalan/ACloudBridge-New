@@ -10,10 +10,18 @@
     postgres_user: "{{ terraform_db_username }}"    # Use the username from Terraform
     postgres_password: "{{ terraform_db_password }}" # Use the password from Terraform
     postgres_db: "{{ terraform_db_name }}"    # Use the database name created by Terraform
-    backend_url: "http://{{ DB_HOST }}:5000" # Use the Jenkins environment variable
+    # backend_url: "http://{{ DB_HOST }}:5000" # Use the Jenkins environment variable
   tasks:
     - name: Gathering Facts
       setup:
+
+    - name: Set backend_url using EC2 public IP
+      set_fact:
+        backend_url: "http://{{ hostvars[inventory_hostname]['ansible_host'] }}:5000"
+        
+    - name: Debug backend_url
+      debug:
+        msg: "backend_url is {{ backend_url }}"
 
     - name: Update yum/dnf cache
       dnf: # Changed from yum to dnf
