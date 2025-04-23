@@ -145,8 +145,8 @@ app.put('/user', async (req, res) => {
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_APP_PASSWORD
+        user: '{{ email_user }}',
+        pass: '{{ email_app_password }}'
     }
 });
 
@@ -154,13 +154,13 @@ app.post('/send-email', (req, res) => {
     const { fullName, emailAddress, message } = req.body;
 
     const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: process.env.EMAIL_USER,
+        from: '{{ email_user }}',
+        to: '{{ email_user }}',
         subject: 'New Contact Form Submission',
         text: `
-            Full Name: ${fullName}
-            Email Address: ${emailAddress}
-            Message: ${message}
+            Full Name: \${fullName}
+            Email Address: \${emailAddress}
+            Message: \${message}
         `
     };
 

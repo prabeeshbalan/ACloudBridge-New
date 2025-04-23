@@ -141,6 +141,8 @@
         db_password: "{{ terraform_db_password }}"
         db_name: "{{ terraform_db_name }}" # Correct database name
         backend_url: "{{ backend_url }}" #  Use the variable
+        email_user: "{{ email_user }}"
+        email_app_password: "{{ email_app_password }}"
 
     - name: Set Environment Variable for Frontend
       shell: |
