@@ -19,10 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const pool = new Pool({
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
+    user: '{{ db_user }}',
+    password: '{{ db_password }}',
+    host: '{{ db_host }}',
+    database: '{{ db_name }}',
     port: 5432,
 });
 
@@ -158,9 +158,9 @@ app.post('/send-email', (req, res) => {
         to: '{{ email_user }}',
         subject: 'New Contact Form Submission',
         text: `
-            Full Name: \${fullName}
-            Email Address: \${emailAddress}
-            Message: \${message}
+            Full Name: ${fullName}
+            Email Address: ${emailAddress}
+            Message: ${message}
         `
     };
 

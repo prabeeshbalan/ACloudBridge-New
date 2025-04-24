@@ -8,11 +8,11 @@ const { Pool } = require('pg');
 // Assuming you have a PostgreSQL connection pool configured
 const pool = new Pool({
     // Replace with your actual database connection details
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_DATABASE,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
+    user: '{{ db_user }}',
+    password: '{{ db_password }}',
+    host: '{{ db_host }}',
+    database: '{{ db_name }}',
+    port: 5432,
 });
 
 // GET /user - Get user information

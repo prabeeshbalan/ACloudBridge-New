@@ -11,7 +11,7 @@ const port = 5000; // Backend port is not dynamically set by your current Ansibl
 const registerRoute = require('./routes/register');
 const loginRoute = require('./routes/login');
 const verifyRoute = require('./routes/verify');
-const deactivateRoute = require('./deactivate');
+const deactivateRoute = require('./routes/deactivate');
 
 app.use(cors());
 app.use(express.json());
@@ -157,11 +157,11 @@ app.post('/send-email', (req, res) => {
         from: '{{ email_user }}',
         to: '{{ email_user }}',
         subject: 'New Contact Form Submission',
-        text: \`
+        text: `
             Full Name: \${fullName}
             Email Address: \${emailAddress}
             Message: \${message}
-        \`
+        `
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -181,5 +181,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-    console.log(\`Server is running on port \${port}\`);
+    console.log(`Server is running on port ${port}`);
 });
