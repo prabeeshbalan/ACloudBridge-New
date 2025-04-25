@@ -14,6 +14,13 @@
   tasks:
     - name: Gathering Facts
       setup:
+    
+    - name: Write .env.production file
+      copy:
+        content: |
+          NEXT_PUBLIC_BACKEND_URL=http://{{ inventory_hostname }}:5000
+          # Add any other frontend environment variables here
+        dest: "/home/ec2-user/aCloudBridge/acloudbridge_webapp/.env.production"
 
     - name: Set backend_url using EC2 public IP
       set_fact:
@@ -143,6 +150,17 @@
         backend_url: "{{ backend_url }}" #  Use the variable
         email_user: "{{ terraform_email_user }}"
         email_app_password: "{{ terraform_email_app_password }}"
+
+    - name: Deploy Register Route Configuration
+      template:
+        src: register.js.j2
+        dest: /home/ec2-user/aCloudBridge/acloudbridge_backend/routes/register.js
+      become_user: ec2-user
+      vars:
+        db_host: "{{ terraform_db_endpoint }}"
+        db_user: "{{ terraform_db_username }}"
+        db_password: "{{ terraform_db_password }}"
+        db_name: "{{ terraform_db_name }}"
 
     - name: Set Environment Variable for Frontend
       shell: |
