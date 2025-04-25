@@ -14,13 +14,6 @@
   tasks:
     - name: Gathering Facts
       setup:
-    
-    - name: Write .env.production file
-      copy:
-        content: |
-          NEXT_PUBLIC_BACKEND_URL=http://{{ inventory_hostname }}:5000
-          # Add any other frontend environment variables here
-        dest: "/home/ec2-user/aCloudBridge/acloudbridge_webapp/.env.production"
 
     - name: Set backend_url using EC2 public IP
       set_fact:
